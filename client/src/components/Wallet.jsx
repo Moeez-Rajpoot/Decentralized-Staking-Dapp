@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect, Children } from "react";
+import { useState, useEffect } from "react";
 import { ConnectWallet } from "../utils/WalletConnection";
 import { WalletProvider } from "../context/WalletState";
 
-const Wallet = ({Children}) => {
+const Wallet = () => {
   const [state, setstate] = useState({
     Provider: null,
     Account: null,
@@ -12,7 +12,7 @@ const Wallet = ({Children}) => {
     ChainId: null,
   });
 
-  const [isloading, setisloading] = useState(true);
+  const [isloading, setisloading] = useState(false);
 
   const handlewallet = async () => {
     try {
@@ -27,33 +27,92 @@ const Wallet = ({Children}) => {
         StakingTokenContract,
         ChainId,
       });
-      console.log("Wallet connected successfully", state);
-      console.log("Provider", Provider);
-      console.log("Account", Account);
-      console.log("StakingToken", StakingToken);
-      console.log("StakingTokenContract", StakingTokenContract);
-      console.log("ChainId", ChainId);
-      setisloading(false);
+
+      console.log("Wallet connected successfully", {
+        Provider,
+        Account,
+        StakingToken,
+        StakingTokenContract,
+        ChainId,
+      });
     } catch (error) {
-      setisloading(false);
-      console.error("Error connecting to wallet", error.message);
+      console.error("Error connecting to wallet:", error.message);
     } finally {
       setisloading(false);
     }
   };
 
-  return (
-    <>
-      <div>
-        <WalletProvider value={state}>{Children}</WalletProvider>
-        <button onClick={handlewallet}>Connect Wallet</button>
-      </div>
-    </>
-  );
+  useEffect(() => {
+    if (!window.ethereum) return;
 
-  //0x9e56fD8D63AcF1A6DE51Fac31A68FB3cE7482f72  StakeToken Address
-  //0x84Faf1f9347dC2a7340Ec41Da70000BCDDD98185 RewardToken Address
-  //0x90F43C7Ccf1a19Fa168980457eC58ADDe0614b61 StakingContract Address
+    const handleAccountsChanged = async (accounts) => {
+    
+      if (accounts.length > 0) {
+        const {
+          Provider,
+          StakingToken,
+          StakingTokenContract,
+          ChainId,
+        } = await ConnectWallet();
+
+        setstate({
+          Provider,
+          Account: accounts[0],
+          StakingToken,
+          StakingTokenContract,
+          ChainId,
+        });
+
+        console.log("Account changed:", accounts[0]);
+      } else {
+        setstate((prevState) => ({
+          ...prevState,
+          Account: null,
+        }));
+      }
+    };
+
+    const handleChainChanged = async (chainId) => {
+      const {
+        Provider,
+        Account,
+        StakingToken,
+        StakingTokenContract,
+      } = await ConnectWallet();
+
+      setstate((prevState) => ({
+        ...prevState,
+        ChainId: Number(chainId),
+        Provider,
+        Account,
+        StakingToken,
+        StakingTokenContract,
+      }));
+
+      console.log("Chain changed:", Number(chainId));
+    };
+
+    // Add event listeners
+    window.ethereum.on("accountsChanged", handleAccountsChanged);
+    window.ethereum.on("chainChanged", handleChainChanged);
+
+    // Cleanup on unmount
+    return () => {
+      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+      window.ethereum.removeListener("chainChanged", handleChainChanged);
+    };
+  }, []);
+
+  return (
+    <div>
+      <WalletProvider value={state}>
+      </WalletProvider>
+
+      <button onClick={handlewallet} disabled={isloading}>
+        {isloading ? "Connected" : "Connect Wallet"}
+      </button>
+    </div>
+  );
 };
 
 export default Wallet;

@@ -25,8 +25,8 @@ const ConnectWallet = async () => {
             throw new Error("Please connect to MetaMask.");
         }
         
-        const StakingContractAddress = import.meta.env.STAKINGCONTRACT_ADDRESS;
-        const StakingTokenAddress = import.meta.env.STAKINGTOKEN_ADDRESS;
+        const StakingContractAddress = import.meta.env.VITE_STAKINGCONTRACT_ADDRESS;
+        const StakingTokenAddress = import.meta.env.VITE_STAKINGTOKEN_ADDRESS;
         
         stakingtokencontract = new ethers.Contract(StakingTokenAddress, StakingTokenabi, signer);
         stakingcontract = new ethers.Contract(StakingContractAddress, StakingContractabi, signer);
