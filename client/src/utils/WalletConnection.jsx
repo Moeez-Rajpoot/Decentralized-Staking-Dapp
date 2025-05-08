@@ -2,7 +2,6 @@
 import { ethers } from 'ethers';
 import StakingContractabi from '../abi/Stakingabi.json';
 import StakingTokenabi from '../abi/StakeTokenabi.json';
-
 const ConnectWallet = async () => {
     try {
         let signer, provider, stakingcontract, stakingtokencontract, chainid;
@@ -26,8 +25,8 @@ const ConnectWallet = async () => {
             throw new Error("Please connect to MetaMask.");
         }
         
-        const StakingContractAddress = "0x90F43C7Ccf1a19Fa168980457eC58ADDe0614b61";
-        const StakingTokenAddress = "0x9e56fD8D63AcF1A6DE51Fac31A68FB3cE7482f72";
+        const StakingContractAddress = import.meta.env.STAKINGCONTRACT_ADDRESS;
+        const StakingTokenAddress = import.meta.env.STAKINGTOKEN_ADDRESS;
         
         stakingtokencontract = new ethers.Contract(StakingTokenAddress, StakingTokenabi, signer);
         stakingcontract = new ethers.Contract(StakingContractAddress, StakingContractabi, signer);
