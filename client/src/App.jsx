@@ -1,14 +1,15 @@
 import './App.css'
-import Wallet from './components/Wallet'
-
+import Sidebar from './components/sidebar/sidebar'
+import Navbar from './components/navbar/navbar'
 function App() {
   
 
   return (
     <>
 
-    <div>
-      <Wallet/>
+    <div className='bg-gray-900'>
+      <Navbar/>
+      <Sidebar/>
     </div>
       
         
