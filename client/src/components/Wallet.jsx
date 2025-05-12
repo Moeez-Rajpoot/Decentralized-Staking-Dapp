@@ -4,8 +4,10 @@ import { ConnectWallet } from "../utils/WalletConnection";
 import { WalletProvider } from "../context/WalletState";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarth, faNetworkWired } from "@fortawesome/free-solid-svg-icons";
+import { useWallet } from "../context/WalletState";
 
 const Wallet = () => {
+  // Local state for component-specific needs
   const [state, setstate] = useState({
     Provider: null,
     Account: null,
@@ -15,14 +17,31 @@ const Wallet = () => {
   });
 
   const [isloading, setisloading] = useState(false);
+  
+  // Get context functions
+  const { updateWalletState, updateLoadingState } = useWallet();
 
   const handlewallet = async () => {
     try {
+      // Update local state
       setisloading(true);
+      // Update global context loading state
+      updateLoadingState(true);
+      
       const { Provider, Account, StakingToken, StakingTokenContract, ChainId } =
         await ConnectWallet();
 
+      // Update local state
       setstate({
+        Provider,
+        Account,
+        StakingToken,
+        StakingTokenContract,
+        ChainId,
+      });
+      
+      // Also update context state
+      updateWalletState({
         Provider,
         Account,
         StakingToken,
@@ -41,6 +60,7 @@ const Wallet = () => {
       console.error("Error connecting to wallet:", error.message);
     } finally {
       setisloading(false);
+      updateLoadingState(false);
     }
   };
 
@@ -101,33 +121,31 @@ const Wallet = () => {
       <WalletProvider value={state}></WalletProvider>
 
       <div className="flex flex-row">
-        <div className="flex flex-row justify-between items-center mr-2 border-[#0f468a] border-2 p-4 rounded-4xl shadow-md  ">
-          {state.ChainId== 11155111 ? (
+        <div className={`flex flex-row justify-between items-center mr-2 border-[#0f468a] border-2 p-4 rounded-4xl shadow-md ${state.ChainId === null ? "hidden" : "block"}`}>
+          {state.ChainId === 11155111 ? (
             <>
-            <FontAwesomeIcon
-              icon={faNetworkWired}
-              className="mr-2 text-lg text-green-500"
+              <FontAwesomeIcon
+                icon={faNetworkWired}
+                className="mr-2 text-lg text-green-500"
               />
-            <p>Network Connected : Sepolia</p>
-              </>
-            
+              <p>Network Connected : Sepolia</p>
+            </>
           ) : (
             <>
-            <FontAwesomeIcon
-              icon={faNetworkWired}
-              className="mr-2 text-lg text-red-500"
+              <FontAwesomeIcon
+                icon={faNetworkWired}
+                className="mr-2 text-lg text-red-500"
               />
-            <p>Network Not Supported</p>
-              </>
+              <p>Network Not Supported</p>
+            </>
           )}
         </div>
 
-        <div className="flex flex-row justify-between items-center bg-gradient-to-r from-[#4994F2] to-[#0f468a] p-4 rounded-4xl shadow-md  ">
+        <div className="flex flex-row justify-between items-center bg-gradient-to-r from-[#4994F2] to-[#0f468a] p-4 rounded-4xl shadow-md">
           <FontAwesomeIcon icon={faEarth} className="mr-2 text-xl" />
           <button className="hover:cursor-pointer" onClick={handlewallet}>
             {isloading ? (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-              
             ) : state.Account ? (
               <span className="text-white font-mono">
                 {state.Account.slice(0, 5) +
