@@ -3,7 +3,7 @@ import './App.css';
 import Sidebar from './components/sidebar/sidebar';
 import Navbar from './components/navbar/navbar';
 import { WalletProvider } from './context/WalletState';
-import Dashboard from './components/dashboard';
+import Dashboard from './components/dashboard/dashboard';
 import Stake from './components/stake'; // Import other components
 // import Reward from './components/Reward'; // Import if available
 // import Admin from './components/Admin'; // Import if available

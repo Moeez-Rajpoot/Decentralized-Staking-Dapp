@@ -24,7 +24,7 @@ function Sidebar({ onOptionChange, initialActive = "Dashboard" }) {
   };
   
   return (
-    <div className="sidebar flex p-4 w-1/5 h-screen bg-[#4b4c4e36]">
+    <div className="sidebar flex p-4 w-1/5 min-h-fit bg-[#4b4c4e36]">
       <ul className="w-full">
         {options.map((option, index) => (
           <li
