@@ -24,14 +24,14 @@ function Sidebar({ onOptionChange, initialActive = "Dashboard" }) {
   };
   
   return (
-    <div className="sidebar flex p-4 w-1/5 h-screen bg-[#4b4c4e80]">
+    <div className="sidebar flex p-4 w-1/5 h-screen bg-[#4b4c4e36]">
       <ul className="w-full">
         {options.map((option, index) => (
           <li
             key={index}
             className={`text-lg font-mono p-3.5 mt-2 hover:bg-[#101828] hover:rounded-lg hover:cursor-pointer transition-all duration-200 ${
               activeOption === option.name 
-                ? "bg-[#101828] rounded-lg font-bold outline-0 border-[1px] border-white" 
+                ? "bg-[#10182850] rounded-lg font-bold outline-0 border-[1px] border-white" 
                 : ""
             }`}
             onClick={() => handleOptionClick(option.name)}
