@@ -141,7 +141,7 @@ const Wallet = () => {
           )}
         </div>
 
-        <div className="flex flex-row justify-between items-center bg-gradient-to-r from-[#4994F2] to-[#0f468a] p-4 rounded-4xl shadow-md">
+        <div className="flex flex-row justify-between items-center bg-[#1447E6] p-4 rounded-4xl shadow-md">
           <FontAwesomeIcon icon={faEarth} className="mr-2 text-xl" />
           <button className="hover:cursor-pointer" onClick={handlewallet}>
             {isloading ? (
