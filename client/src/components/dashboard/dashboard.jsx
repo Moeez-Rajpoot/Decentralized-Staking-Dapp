@@ -6,10 +6,64 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Global from "../global";
-import React from "react";
+import React, { useState, useEffect, Children } from "react";
+import { useWallet } from "../../context/WalletState";
+import { ethers } from "ethers";
 
-function dashboard() {
-  
+
+
+
+function Dashboard({comp}) {
+  const { Account,StakingTokenContract, StakingToken  } = useWallet();
+  const [walletData, setWalletData] = useState({
+    balance: 0,
+    stakedAmount: 0
+  });
+
+  // Call async function inside useEffect
+  useEffect(() => {
+    // Can't make useEffect itself async, so create a separate async function
+    const fetchData = async () => {
+      if (!StakingToken || !Account) {
+        console.log("StakingToken or Account is not available yet");
+        return;
+      }
+
+      // Set loading state
+      setWalletData(prev => ({ ...prev, loading: true }));
+
+      try {
+        // Fetch wallet balance
+        let balance = await StakingToken.balanceOf(Account);
+        balance = Number(balance)/ 1e18;
+        console.log("Balance:", balance);
+        
+        // You could fetch other data here too
+        let stakedAmount = await StakingTokenContract.StakedBalance(Account);
+        stakedAmount = Number(stakedAmount);
+        console.log("Staked Amount:", stakedAmount);
+
+        // Update state with all fetched values
+        setWalletData({
+          balance: balance,
+          stakedAmount: stakedAmount, // Replace with actual fetched value
+        });
+      } catch (error) {
+        console.error("Error fetching balance:", error);
+        setWalletData(prev => ({ ...prev, loading: false }));
+      }
+    };
+
+    // Call the async function
+    fetchData();
+
+    // Set up an interval to refresh data (optional)
+    const intervalId = setInterval(fetchData, 30000); // Refresh every 30 seconds
+
+    // Cleanup function to clear interval when component unmounts
+    return () => clearInterval(intervalId);
+
+  }, [Account, StakingToken]); // Re-run when these dependencies change
 
   const cards = [
     {
@@ -43,7 +97,7 @@ function dashboard() {
       </p>
 
       {/* Your Staking Overview */}
-      <Global/>
+      {comp}  {/* Render the Global component */}
       
         <h1 className="text-xl font-bold font-mono mt-5">Quick Actions</h1>
 
@@ -92,8 +146,16 @@ function dashboard() {
               <FontAwesomeIcon icon={faWallet} className="text-blue-600 text-2xl " />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-white">999999999999999</h2>
-              <p className="text-sm text-gray-400">Available For Staking</p>
+              {walletData.loading ? (
+                <div className="animate-pulse h-8 w-32 bg-gray-300 rounded"></div>
+              ) : (
+                <>
+                  <h2 className="text-3xl font-bold text-white">
+                    {walletData.balance} <span className="text-sm"> Tokens</span>
+                  </h2>
+                  <p className="text-sm text-gray-400">Available For Staking</p>
+                </>
+              )}
             </div>
           </div>
          </div>
@@ -104,7 +166,7 @@ function dashboard() {
               <FontAwesomeIcon icon={faLock} className="text-blue-600 text-2xl " />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-white">999</h2>
+              <h2 className="text-3xl font-bold text-white">{walletData.stakedAmount}</h2>
               <p className="text-sm text-gray-400">Currently Staked</p>
             </div>
           </div>
@@ -114,4 +176,4 @@ function dashboard() {
   );
 }
 
-export default dashboard;
+export default Dashboard;

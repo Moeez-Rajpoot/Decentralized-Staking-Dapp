@@ -5,6 +5,7 @@ import Navbar from './components/navbar/navbar';
 import { WalletProvider } from './context/WalletState';
 import Dashboard from './components/dashboard/dashboard';
 import Stake from './components/stake'; // Import other components
+import Global from './components/global'; // Import if available
 // import Reward from './components/Reward'; // Import if available
 // import Admin from './components/Admin'; // Import if available
 
@@ -20,11 +21,11 @@ function App() {
   const renderContent = () => {
     switch (currentSection) {
       case 'Dashboard':
-        return <Dashboard />;
+        return <Dashboard comp={<Global/>} />;
       case 'Stake':
-        return <Stake />;
+        return <Stake comp={<Global/>}/>;
       case 'Reward':
-        return <Reward />;
+        return <Reward comp={<Global/>} />;
       case 'Admin':
         return <Admin />;
       default:

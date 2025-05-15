@@ -4,6 +4,7 @@ import {
   faClock,
   faClockRotateLeft,
   faSackDollar,
+  faSpinner,
   faWandMagicSparkles,
   faWarehouse,
 } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +16,8 @@ import { ethers } from "ethers";
 function Global() {
   // Access wallet context
   const { Account, StakingTokenContract } = useWallet();
+
+  const [loading, setLoading] = useState(false);
 
   // State to store contract data
   const [stakingData, setStakingData] = useState({
@@ -77,12 +80,16 @@ function Global() {
 
   // Function to fetch data from contract
   const fetchContractData = async () => {
+    
     if (!StakingTokenContract || !Account) {
       console.log("StakingTokenContract or Account is not available yet");
       return;
     }
+    console.log("THE ACCOUNT ADDRESS IN FETCH IS ", Account);
+    
 
     try {
+      setLoading(true);
       let userStaked,pendingRewards, rewardRate, totalStaked, lastStakedTime , currectapy;
 
       try {
@@ -168,6 +175,7 @@ function Global() {
             lastStakedTime: lastStakedTime,
             rewardRate: rewardRate
         });
+        setLoading(false);
         console.log("State updated successfully");
         console.log("Staking data:", {
           stakedAmount: userStaked,
@@ -179,6 +187,7 @@ function Global() {
 
         });
       } catch (e) {
+        setLoading(false);
         console.error("Error formatting values:", e.message);
 
         // Fallback to setting default values if formatting fails
@@ -192,6 +201,7 @@ function Global() {
         });
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error in fetchContractData:", error);
 
       // Set default values on error
@@ -220,7 +230,11 @@ function Global() {
   return (
     <>
       <h1 className="text-xl font-bold font-mono mt-3">
-        Your Staking Overview
+        Your Staking Overview 
+        {loading && (
+          // 
+          <FontAwesomeIcon className="ml-3 animate-spin" icon={faSpinner} />
+        )}
       </h1>
 
       <div className="mt-4 flex flex-col w-full">
