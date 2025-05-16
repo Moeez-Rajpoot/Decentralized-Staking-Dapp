@@ -85,8 +85,6 @@ function Global() {
       console.log("StakingTokenContract or Account is not available yet");
       return;
     }
-    console.log("THE ACCOUNT ADDRESS IN FETCH IS ", Account);
-    
 
     try {
       setLoading(true);
@@ -216,15 +214,13 @@ function Global() {
     }
   };
 
-  // Fetch data when component mounts or wallet changes
   useEffect(() => {
     fetchContractData();
 
-    // Set interval to refresh data periodically
-    const intervalId = setInterval(fetchContractData, 15000);
+ 
+    // const intervalId = setInterval(fetchContractData, 15000);
 
-    // Clean up interval on component unmount
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, [Account, StakingTokenContract]);
 
   return (

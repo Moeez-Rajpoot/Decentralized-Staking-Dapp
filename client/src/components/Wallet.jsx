@@ -72,20 +72,30 @@ const Wallet = () => {
         const { Provider, StakingToken, StakingTokenContract, ChainId } =
           await ConnectWallet();
 
-        setstate({
+        const newState = {
           Provider,
           Account: accounts[0],
           StakingToken,
           StakingTokenContract,
           ChainId,
-        });
+        };
+
+        // Update local state
+        setstate(newState);
+        
+        // Also update context state - THIS IS THE MISSING PART
+        updateWalletState(newState);
 
         console.log("Account changed:", accounts[0]);
       } else {
-        setstate((prevState) => ({
-          ...prevState,
+        const newState = {
+          ...state,
           Account: null,
-        }));
+        };
+        
+        // Update both states when disconnected
+        setstate(newState);
+        updateWalletState(newState);
       }
     };
 
@@ -93,14 +103,20 @@ const Wallet = () => {
       const { Provider, Account, StakingToken, StakingTokenContract } =
         await ConnectWallet();
 
-      setstate((prevState) => ({
-        ...prevState,
+      const newState = {
+        ...state,
         ChainId: Number(chainId),
         Provider,
         Account,
         StakingToken,
         StakingTokenContract,
-      }));
+      };
+
+      // Update local state
+      setstate(newState);
+      
+      // Also update context state - THIS IS THE MISSING PART
+      updateWalletState(newState);
 
       console.log("Chain changed:", Number(chainId));
     };
