@@ -4,10 +4,10 @@ import Sidebar from './components/sidebar/sidebar';
 import Navbar from './components/navbar/navbar';
 import { WalletProvider } from './context/WalletState';
 import Dashboard from './components/dashboard/dashboard';
-import Stake from './components/stake'; // Import other components
-import Global from './components/global'; // Import if available
-// import Reward from './components/Reward'; // Import if available
-// import Admin from './components/Admin'; // Import if available
+import Stake from './components/stake'; 
+import Global from './components/global'; 
+import Reward from './components/rewards'; 
+// import Admin from './components/Admin'; 
 
 function App() {
   const [currentSection, setCurrentSection] = useState('Dashboard');
@@ -21,9 +21,9 @@ function App() {
   const renderContent = () => {
     switch (currentSection) {
       case 'Dashboard':
-        return <Dashboard comp={<Global/>} />;
+        return <Dashboard comp={<Global/>} onOptionChange={handleSectionChange} />;
       case 'Stake':
-        return <Stake comp={<Global/>}/>;
+        return <Stake comp={<Global/>} />;
       case 'Reward':
         return <Reward comp={<Global/>} />;
       case 'Admin':
@@ -40,7 +40,7 @@ function App() {
         <div className='flex flex-row'>
           <Sidebar 
             onOptionChange={handleSectionChange}
-            initialActive={currentSection}
+            activeSection={currentSection}
           />
           <div className="flex-1">
             {renderContent()}

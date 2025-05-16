@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem, faHandshakeSimple, faHouse, faUserTie } from "@fortawesome/free-solid-svg-icons";
 
-function Sidebar({ onOptionChange, initialActive = "Dashboard" }) {
-  // State to track the active option - initialized with prop value
-  const [activeOption, setActiveOption] = useState(initialActive);
-
+function Sidebar({ onOptionChange, activeSection = "Dashboard" }) {
   const options = [
     { name: "Dashboard", icon: faHouse },
     { name: "Stake", icon: faHandshakeSimple },
@@ -13,11 +10,7 @@ function Sidebar({ onOptionChange, initialActive = "Dashboard" }) {
     { name: "Admin", icon: faUserTie },
   ];
 
-  // Handle option click
   const handleOptionClick = (optionName) => {
-    setActiveOption(optionName);
-    
-    // Call the callback function to inform parent
     if (onOptionChange) {
       onOptionChange(optionName);
     }
@@ -29,8 +22,8 @@ function Sidebar({ onOptionChange, initialActive = "Dashboard" }) {
         {options.map((option, index) => (
           <li
             key={index}
-            className={`text-lg font-mono p-3.5 mt-2 hover:bg-[#101828] hover:rounded-lg hover:cursor-pointer transition-all duration-200 ${
-              activeOption === option.name 
+            className={`text-lg font-mono p-3.5 mt-2 hover:bg-[#101828] hover:rounded-lg hover:cursor-pointer ${
+              activeSection === option.name 
                 ? "bg-[#10182850] rounded-lg font-bold outline-0 border-[1px] border-white" 
                 : ""
             }`}
@@ -38,7 +31,7 @@ function Sidebar({ onOptionChange, initialActive = "Dashboard" }) {
           >
             <FontAwesomeIcon 
               icon={option.icon} 
-              className={`mr-5 ${activeOption === option.name ? "text-white" : ""}`} 
+              className={`mr-5 ${activeSection === option.name ? "text-white" : ""}`} 
             />
             {option.name}
           </li>

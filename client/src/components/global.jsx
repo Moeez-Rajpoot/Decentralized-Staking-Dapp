@@ -23,7 +23,7 @@ function Global() {
   const [stakingData, setStakingData] = useState({
     stakedAmount: 0,
     pendingReward: 0,
-    currentAPY: 0,
+    RewardPool: 0,
     totalStaked: 0,
     lastStakedTime: 0,
     rewardRate: 0,
@@ -45,9 +45,9 @@ function Global() {
       color: "text-blue-600",
     },
     {
-      title: "Current APY",
-      value: stakingData.currentAPY,
-      sign: "%",
+      title: "Reward Pool Balance",
+      value: stakingData.RewardPool,
+      sign: "Tokens",
       icon: faChartSimple,
       color: "text-green-600",
     },
@@ -88,7 +88,7 @@ function Global() {
 
     try {
       setLoading(true);
-      let userStaked,pendingRewards, rewardRate, totalStaked, lastStakedTime , currectapy;
+      let userStaked,pendingRewards, rewardRate, totalStaked, lastStakedTime , rewardpool;
 
       try {
         console.log("Fetching StakedBalance...");
@@ -148,18 +148,12 @@ function Global() {
       }
 
       try {
-        if (totalStaked <= 0) {
-          currectapy = "0 tokens staked";
-        } else {
-          // Seconds in a year
-          const secondsInYear = 31536000;
-          // APY formula: (reward per second * seconds in year / total staked) * 100
-          currectapy = (rewardRate * secondsInYear / totalStaked) * 100;
-          console.log("Calculated APY:", currectapy);
-        }
+        rewardpool = await StakingTokenContract.RewardPoolBalance();
+        rewardpool = Number(rewardpool)/1e18;
+        console.log("RewardPool fetched:", rewardpool);
       } catch (error) {
-        console.error("Error calculating APY:", error);
-        currectapy = 0;
+        console.error("Error Fetching RewardPool", error);
+        rewardpool = 0;
       }
 
 
@@ -168,7 +162,7 @@ function Global() {
         setStakingData({
           stakedAmount: userStaked,
           pendingReward: pendingRewards,
-            currentAPY: currectapy,
+            RewardPool: rewardpool,
             totalStaked: totalStaked,
             lastStakedTime: lastStakedTime,
             rewardRate: rewardRate
@@ -178,7 +172,7 @@ function Global() {
         console.log("Staking data:", {
           stakedAmount: userStaked,
             pendingReward: pendingRewards,
-            currentAPY: currectapy,
+            RewardPool: rewardpool,
             totalStaked: totalStaked,
             lastStakedTime: lastStakedTime,
             rewardRate: rewardRate
@@ -192,7 +186,7 @@ function Global() {
         setStakingData({
           stakedAmount: "0",
           pendingReward: "0",
-          currentAPY: "0",
+          RewardPool: "0",
           totalStaked: "0",
           lastStakedTime: 0,
           rewardRate: "0",
@@ -206,7 +200,7 @@ function Global() {
       setStakingData({
         stakedAmount: "0",
         pendingReward: "0",
-        currentAPY: "0",
+        RewardPool: "0",
         totalStaked: "0",
         lastStakedTime: 0,
         rewardRate: "0",

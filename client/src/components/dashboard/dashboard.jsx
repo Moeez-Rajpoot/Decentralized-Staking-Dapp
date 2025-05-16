@@ -9,11 +9,12 @@ import Global from "../global";
 import React, { useState, useEffect, Children } from "react";
 import { useWallet } from "../../context/WalletState";
 import { ethers } from "ethers";
+import Stake from "../stake";
 
 
 
 
-function Dashboard({comp}) {
+function Dashboard({comp , onOptionChange}) {
   const { Account,StakingTokenContract, StakingToken  } = useWallet();
   const [walletData, setWalletData] = useState({
     balance: 0,
@@ -126,7 +127,16 @@ function Dashboard({comp}) {
             <button
               className={`mt-4 mb-3 text-white font-bold text-md rounded-xl w-full px-4 py-2 ${item.btncolor} hover:cursor-pointer`}
               onClick={() => {
-                alert(item.btnvalue);
+                if (item.btnvalue === "Stake") {
+                  console.log("Stake button clicked");
+                  onOptionChange("Stake");
+                } else if (item.btnvalue === "Claim") {
+              
+                  onOptionChange("Reward");
+                } else if (item.btnvalue === "Unstake") {
+                
+                  onOptionChange("Stake");
+                }
               }}
             >
               {item.btnvalue}
