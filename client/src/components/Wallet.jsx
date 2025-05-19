@@ -13,6 +13,7 @@ const Wallet = () => {
     Account: null,
     StakingToken: null,
     StakingTokenContract: null,
+    RewardContract: null,
     ChainId: null,
   });
 
@@ -28,7 +29,7 @@ const Wallet = () => {
       // Update global context loading state
       updateLoadingState(true);
       
-      const { Provider, Account, StakingToken, StakingTokenContract, ChainId } =
+      const { Provider, Account, StakingToken, StakingTokenContract, RewardContract , ChainId } =
         await ConnectWallet();
 
       // Update local state
@@ -37,6 +38,7 @@ const Wallet = () => {
         Account,
         StakingToken,
         StakingTokenContract,
+        RewardContract,
         ChainId,
       });
       
@@ -46,6 +48,7 @@ const Wallet = () => {
         Account,
         StakingToken,
         StakingTokenContract,
+        RewardContract,
         ChainId,
       });
 
@@ -69,7 +72,7 @@ const Wallet = () => {
 
     const handleAccountsChanged = async (accounts) => {
       if (accounts.length > 0) {
-        const { Provider, StakingToken, StakingTokenContract, ChainId } =
+        const { Provider, StakingToken, StakingTokenContract,RewardContract, ChainId } =
           await ConnectWallet();
 
         const newState = {
@@ -77,6 +80,7 @@ const Wallet = () => {
           Account: accounts[0],
           StakingToken,
           StakingTokenContract,
+          RewardContract,
           ChainId,
         };
 
@@ -100,7 +104,7 @@ const Wallet = () => {
     };
 
     const handleChainChanged = async (chainId) => {
-      const { Provider, Account, StakingToken, StakingTokenContract } =
+      const { Provider, Account, StakingToken, StakingTokenContract , RewardContract } =
         await ConnectWallet();
 
       const newState = {
@@ -110,6 +114,7 @@ const Wallet = () => {
         Account,
         StakingToken,
         StakingTokenContract,
+        RewardContract,
       };
 
       // Update local state

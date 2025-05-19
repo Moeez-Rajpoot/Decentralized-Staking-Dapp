@@ -2,9 +2,10 @@
 import { ethers } from 'ethers';
 import StakingContractabi from '../abi/Stakingabi.json';
 import StakingTokenabi from '../abi/StakeTokenabi.json';
+import RewardTokenabi from '../abi/RewardTokenabi.json';
 const ConnectWallet = async () => {
     try {
-        let signer, provider, stakingcontract, stakingtokencontract, chainid;
+        let signer, provider, stakingcontract, stakingtokencontract, rewardcontract , chainid;
         
         if (window.ethereum == null) {
             throw new Error("Please install MetaMask to use this app.");
@@ -27,15 +28,18 @@ const ConnectWallet = async () => {
         
         const StakingContractAddress = import.meta.env.VITE_STAKINGCONTRACT_ADDRESS;
         const StakingTokenAddress = import.meta.env.VITE_STAKINGTOKEN_ADDRESS;
+        const RewardContract = import.meta.env.VITE_REWARDTOKEN_ADDRESS;
         
         stakingtokencontract = new ethers.Contract(StakingTokenAddress, StakingTokenabi, signer);
         stakingcontract = new ethers.Contract(StakingContractAddress, StakingContractabi, signer);
+        rewardcontract = new ethers.Contract(RewardContract, RewardTokenabi, signer);
         
         return {
             Provider: provider,
             Account: selectedaccount,
             StakingToken: stakingtokencontract,
             StakingTokenContract: stakingcontract,
+            RewardContract: rewardcontract,
             ChainId: chainid
         };
     } catch (error) {

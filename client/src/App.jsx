@@ -7,7 +7,7 @@ import Dashboard from './components/dashboard/dashboard';
 import Stake from './components/stake'; 
 import Global from './components/global'; 
 import Reward from './components/rewards'; 
-// import Admin from './components/Admin'; 
+import Admin from './components/admin'; 
 
 function App() {
   const [currentSection, setCurrentSection] = useState('Dashboard');

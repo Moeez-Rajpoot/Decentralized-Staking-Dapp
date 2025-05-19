@@ -8,8 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Global from "../global";
 import React, { useState, useEffect, Children } from "react";
 import { useWallet } from "../../context/WalletState";
-import { ethers } from "ethers";
-import Stake from "../stake";
 
 
 

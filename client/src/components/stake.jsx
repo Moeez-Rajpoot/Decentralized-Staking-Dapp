@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import Global from "./global";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowRightArrowLeft,
-  faPlus,
-  faWallet,
-} from "@fortawesome/free-solid-svg-icons";
 
 function Stake({ comp }) {
   const [stakeValues, setStakeValues] = useState({

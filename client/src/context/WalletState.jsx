@@ -14,6 +14,7 @@ export const WalletProvider = ({ children }) => {
     Account: null,
     StakingToken: null,
     StakingTokenContract: null,
+    RewardContract: null,
     ChainId: null,
   });
   
