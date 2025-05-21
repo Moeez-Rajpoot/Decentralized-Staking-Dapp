@@ -80,7 +80,7 @@ function Rewards({ updatehandle, updatestate }) {
               {pendingReward.toFixed(3)}
             </h1>
           )}
-          <h3 className="text-gray-500 text-sm">Tokens</h3>
+          <h3 className="text-gray-500 text-sm">REW Tokens</h3>
         </div>
 
         <button
@@ -125,21 +125,21 @@ function Rewards({ updatehandle, updatestate }) {
       <div className="flex flex-col gap-3 mt-6 w-full p-4 bg-[#4b4c4e36] border-1 border-[#4b4c4ee8] outline-0 rounded-2xl">
         <h2 className="font-bold text-md">How Rewards Work</h2>
         <div className="grid grid-cols-3 gap-4">
-          <div className="flex flex-col items-center p-4 bg-[#4b4c4e20] rounded-lg">
+          <div className="flex flex-col items-center p-10 bg-[#4b4c4e20] rounded-lg">
             <div className="rounded-full bg-blue-600 w-10 h-10 flex justify-center items-center mb-2">1</div>
             <h3 className="font-semibold text-center">Stake Tokens</h3>
             <p className="text-xs text-gray-400 text-center mt-2">
               The more tokens you stake, the more rewards you earn
             </p>
           </div>
-          <div className="flex flex-col items-center p-4 bg-[#4b4c4e20] rounded-lg">
+          <div className="flex flex-col items-center p-10 bg-[#4b4c4e20] rounded-lg">
             <div className="rounded-full bg-blue-600 w-10 h-10 flex justify-center items-center mb-2">2</div>
             <h3 className="font-semibold text-center">Earn Rewards</h3>
             <p className="text-xs text-gray-400 text-center mt-2">
               Rewards accumulate every second based on the current APY
             </p>
           </div>
-          <div className="flex flex-col items-center p-4 bg-[#4b4c4e20] rounded-lg">
+          <div className="flex flex-col items-center p-10 bg-[#4b4c4e20] rounded-lg">
             <div className="rounded-full bg-blue-600 w-10 h-10 flex justify-center items-center mb-2">3</div>
             <h3 className="font-semibold text-center">Claim Anytime</h3>
             <p className="text-xs text-gray-400 text-center mt-2">

@@ -80,7 +80,7 @@ function Stake({updatehandle , updatestate}) {
       heading: "Stake Tokens",
       label: "Amount to Stake",
       label2: "Balance",
-      balancevalue: loading.fetch ? "Loading..." : walletBalance.toFixed(6),
+      balancevalue: loading.fetch ? "Loading..." : walletBalance.toFixed(3),
       fieldvalue1: stakeValues.Value1,
       btncolor: "bg-[#1447E6]",
       discription:
@@ -90,7 +90,7 @@ function Stake({updatehandle , updatestate}) {
       heading: "Unstake Tokens",
       label: "Amount to Unstake",
       label2: "Staked",
-      balancevalue: loading.fetch ? "Loading..." : stakedBalance.toFixed(6),
+      balancevalue: loading.fetch ? "Loading..." : stakedBalance.toFixed(3),
       fieldvalue1: stakeValues.Value2,
       btncolor: "bg-transparent",
       discription:
@@ -260,7 +260,7 @@ function Stake({updatehandle , updatestate}) {
                 {item.label}
               </h4>
               <h4 className="text-gray-500 font-light text-sm w-2/3 text-end">
-                {item.label2}: {item.balancevalue}
+                {item.label2}: {item.balancevalue} STK
               </h4>
             </div>
             <div className="flex flex-row w-full justify-between items-center mt-2 h-12 bg-[#4b4c4e60] rounded-md">
@@ -290,8 +290,8 @@ function Stake({updatehandle , updatestate}) {
               disabled={(loading.stake && index === 0) || (loading.unstake && index === 1)}
             >
               {index === 0 
-                ? loading.stake ? "Staking..." : "Stake Tokens"
-                : loading.unstake ? "Unstaking..." : "Unstake Tokens"
+                ? loading.stake ? "Staking..." : "Stake STK Tokens"
+                : loading.unstake ? "Unstaking..." : "Unstake STK Tokens"
               }
             </button>
             <p className="text-gray-400 font-light text-sm w-full mt-4 text-start">
