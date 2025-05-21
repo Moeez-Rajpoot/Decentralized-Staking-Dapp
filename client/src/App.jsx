@@ -11,10 +11,15 @@ import Admin from './components/admin';
 
 function App() {
   const [currentSection, setCurrentSection] = useState('Dashboard');
+  const [updateglobal , setUpdateGlobal] = useState(0);
 
   // Handle section change from sidebar
   const handleSectionChange = (section) => {
     setCurrentSection(section);
+  };
+
+  const handleUpdateGlobal = () => {
+    setUpdateGlobal(updateglobal + 1);
   };
 
   // Render the appropriate component based on current section
@@ -23,9 +28,9 @@ function App() {
       case 'Dashboard':
         return <Dashboard comp={<Global/>} onOptionChange={handleSectionChange} />;
       case 'Stake':
-        return <Stake comp={<Global/>} />;
+        return <Stake updatehandle={handleUpdateGlobal} updatestate={updateglobal} />;
       case 'Reward':
-        return <Reward comp={<Global/>} />;
+        return <Reward  updatehandle={handleUpdateGlobal} updatestate={updateglobal} />;
       case 'Admin':
         return <Admin />;
       default:

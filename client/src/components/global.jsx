@@ -10,10 +10,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWallet } from "../context/WalletState";
-import { ethers } from "ethers";
+
 
 // Rename component to follow React conventions (capital first letter)
-function Global() {
+function Global({ updateglobal, onDataUpdated }) {
   // Access wallet context
   const { Account, StakingTokenContract } = useWallet();
 
@@ -86,6 +86,8 @@ function Global() {
       return;
     }
 
+    console.log("Fetching contract data... is being called from Global.jsx");
+
     try {
       setLoading(true);
       let userStaked,pendingRewards, rewardRate, totalStaked, lastStakedTime , rewardpool;
@@ -93,7 +95,7 @@ function Global() {
       try {
         console.log("Fetching StakedBalance...");
         userStaked = await StakingTokenContract.StakedBalance(Account);
-        userStaked = Number(userStaked);
+        userStaked = Number(userStaked)/1e18;
         console.log("User staked fetched:", userStaked);
       } catch (e) {
         console.error("Error fetching StakedBalance:", e.message);
@@ -112,7 +114,7 @@ function Global() {
       try {
         console.log("Fetching Total Staked Amount...");
         totalStaked = await StakingTokenContract.TotalStakedToken();
-        totalStaked = Number(totalStaked);
+        totalStaked = Number(totalStaked)/1e18;
         console.log("totalStaked fetched:", totalStaked);
       } catch (e) {
         console.error("Error fetching StakedBalance:", e.message);
@@ -206,16 +208,30 @@ function Global() {
         rewardRate: "0",
       });
     }
+
+    // If onDataUpdated callback was provided, call it when data is refreshed
+    if (onDataUpdated) {
+      onDataUpdated();
+    }
   };
+  
+  // Make the function available to parent
+  useEffect(() => {
+    if (onDataUpdated) {
+      onDataUpdated(fetchContractData);
+    }
+  }, []);
 
   useEffect(() => {
     fetchContractData();
 
+
+
  
-    // const intervalId = setInterval(fetchContractData, 15000);
+    // const intervalId = setInterval( fetchContractData, 15000);
 
     // return () => clearInterval(intervalId);
-  }, [Account, StakingTokenContract]);
+  }, [updateglobal,Account, StakingTokenContract]);
 
   return (
     <>
@@ -240,7 +256,7 @@ function Global() {
                   {Account
                     ? index === 0 || index === 2
                       ? item.value
-                      : parseFloat(item.value).toFixed(2)
+                      : parseFloat(item.value).toFixed(3)
                     : "--"}{" "}
                   <span className="font-thin text-sm text-gray-400">
                     {item.sign}
